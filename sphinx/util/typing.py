@@ -537,6 +537,9 @@ def stringify_annotation(
     elif isinstance(annotation, types.UnionType):
         qualname = 'types.UnionType'
     else:
+        import sphinx.util.inspect  # avoid circular imports
+        if isinstance(annotation, sphinx.util.inspect.TypeAliasForwardRef):
+            return annotation.name
         # we weren't able to extract the base type, appending arguments would
         # only make them appear twice
         return repr(annotation)
